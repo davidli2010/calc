@@ -14,7 +14,11 @@
 
 package parser
 
-import "errors"
+import (
+	"errors"
+
+	. "github.com/davidli2010/calc/lexer"
+)
 
 type Parser struct {
 	lexer           *Lexer
@@ -60,7 +64,7 @@ func (parser *Parser) parsePrimaryExpression() (float64, error) {
 		return 0, err
 	}
 
-	if token.kind == TokenSubOP {
+	if token.Kind() == TokenSubOP {
 		minus = true
 	} else {
 		parser.backToken(token)
@@ -70,9 +74,9 @@ func (parser *Parser) parsePrimaryExpression() (float64, error) {
 		return 0, err
 	}
 
-	if token.kind == TokenNumber {
-		value = token.value
-	} else if token.kind == TokenLP {
+	if token.Kind() == TokenNumber {
+		value = token.Value()
+	} else if token.Kind() == TokenLP {
 		if value, err = parser.parseExpression(); err != nil {
 			return 0, err
 		}
@@ -81,7 +85,7 @@ func (parser *Parser) parsePrimaryExpression() (float64, error) {
 			return 0, err
 		}
 
-		if token.kind != TokenRP {
+		if token.Kind() != TokenRP {
 			return 0, errors.New("missing ')'")
 		}
 	} else {
@@ -116,12 +120,12 @@ func (parser *Parser) parseTerm() (float64, error) {
 			return 0, err
 		}
 
-		if token.kind != TokenMulOP && token.kind != TokenDivOP {
+		if token.Kind() != TokenMulOP && token.Kind() != TokenDivOP {
 			parser.backToken(token)
 			break
 		}
 
-		op := token.kind
+		op := token.Kind()
 
 		var v2 float64
 		if v2, err = parser.parsePrimaryExpression(); err != nil {
@@ -160,12 +164,12 @@ func (parser *Parser) parseExpression() (float64, error) {
 			return 0, err
 		}
 
-		if token.kind != TokenAddOP && token.kind != TokenSubOP {
+		if token.Kind() != TokenAddOP && token.Kind() != TokenSubOP {
 			parser.backToken(token)
 			break
 		}
 
-		op := token.kind
+		op := token.Kind()
 
 		var v2 float64
 		if v2, err = parser.parseTerm(); err != nil {
