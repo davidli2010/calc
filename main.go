@@ -19,10 +19,9 @@ func main() {
 	fmt.Println("- support '+', '-', '*', '/' and parentheses")
 	fmt.Println("- the result is double float value")
 	fmt.Println("- example: '1.5 + 2 * (-1 - 2.2) / 10', the result is 0.860000")
+	fmt.Println()
 
 	for {
-		fmt.Println()
-
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			panic(fmt.Errorf("error occured when read line: %v", err))
@@ -41,5 +40,7 @@ func main() {
 		} else {
 			fmt.Printf("= %f\n", value)
 		}
+
+		fmt.Println()
 	}
 }
