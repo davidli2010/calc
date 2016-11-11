@@ -14,11 +14,11 @@ func main() {
 	parser := parser.NewParser()
 
 	fmt.Println("simple calculator:")
-	fmt.Println("    - type 'exit' to exit")
-	fmt.Println("    - support integer and floating number")
-	fmt.Println("    - support '+', '-', '*', '/' and parentheses")
-	fmt.Println("    - the result is double float value")
-	fmt.Println("    - example: '1.5 + 2 * (-1 - 2.2) / 10', the result is 0.860000")
+	fmt.Println("- type 'exit' to exit")
+	fmt.Println("- support integer and floating number")
+	fmt.Println("- support '+', '-', '*', '/' and parentheses")
+	fmt.Println("- the result is double float value")
+	fmt.Println("- example: '1.5 + 2 * (-1 - 2.2) / 10', the result is 0.860000")
 
 	for {
 		fmt.Println()
