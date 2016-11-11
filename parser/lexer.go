@@ -1,20 +1,18 @@
-/*
-Copyright 2016 David Li
+// Copyright 2016 David Li
+//
+// Licensed under the Apache License, Version 2.0 (the "License"): you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
-package calc
+package parser
 
 import (
 	"bytes"
@@ -46,6 +44,7 @@ const (
 	TokenLP
 	TokenRP
 	TokenEOL
+	TokenEND
 )
 
 func (k TokenKind) String() string {
@@ -68,6 +67,8 @@ func (k TokenKind) String() string {
 		return "RP"
 	case TokenEOL:
 		return "EOL"
+	case TokenEND:
+		return "END"
 	default:
 		return "Unknown"
 	}
@@ -176,11 +177,11 @@ func (lexer *Lexer) NextToken() (*Token, error) {
 		}
 
 		if isSpace(char) {
+			lexer.pos++
 			if char == '\n' {
 				token.kind = TokenEOL
 				return token, nil
 			}
-			lexer.pos++
 			continue
 		}
 
@@ -221,5 +222,21 @@ func (lexer *Lexer) NextToken() (*Token, error) {
 		return token, nil
 	}
 
-	return nil, fmt.Errorf("syntax error")
+	switch status {
+	case lexInt:
+		fallthrough
+	case lexFrac:
+		fallthrough
+	case lexDot:
+		token.kind = TokenNumber
+		value, err := strconv.ParseFloat(string(token.str), 64)
+		if err != nil {
+			return nil, err
+		}
+		token.value = value
+		return token, nil
+	default:
+		token.kind = TokenEND
+		return token, nil
+	}
 }
