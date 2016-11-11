@@ -9,10 +9,7 @@ import (
 	"github.com/davidli2010/calc/parser"
 )
 
-func main() {
-	reader := bufio.NewReader(os.Stdin)
-	parser := parser.NewParser()
-
+func displayTips() {
 	fmt.Println("simple calculator:")
 	fmt.Println("- type 'exit' to exit")
 	fmt.Println("- support integer and floating number")
@@ -20,6 +17,13 @@ func main() {
 	fmt.Println("- the result is double float value")
 	fmt.Println("- example: '1.5 + 2 * (-1 - 2.2) / 10', the result is 0.860000")
 	fmt.Println()
+}
+
+func main() {
+	displayTips()
+
+	reader := bufio.NewReader(os.Stdin)
+	parser := parser.NewParser()
 
 	for {
 		line, err := reader.ReadString('\n')
