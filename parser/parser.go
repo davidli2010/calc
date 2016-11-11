@@ -102,14 +102,17 @@ func (parser *Parser) parsePrimaryExpression() (float64, error) {
  *     | term TokenDivOP primary_expression
  */
 func (parser *Parser) parseTerm() (float64, error) {
-	v1, err1 := parser.parsePrimaryExpression()
-	if err1 != nil {
-		return 0, err1
+	var v1 float64
+	var err error
+
+	if v1, err = parser.parsePrimaryExpression(); err != nil {
+		return 0, err
 	}
 
 	for {
-		token, err := parser.nextToken()
-		if err != nil {
+		var token *Token
+
+		if token, err = parser.nextToken(); err != nil {
 			return 0, err
 		}
 
@@ -120,9 +123,9 @@ func (parser *Parser) parseTerm() (float64, error) {
 
 		op := token.kind
 
-		v2, err2 := parser.parsePrimaryExpression()
-		if err2 != nil {
-			return 0, nil
+		var v2 float64
+		if v2, err = parser.parsePrimaryExpression(); err != nil {
+			return 0, err
 		}
 
 		switch op {
@@ -143,14 +146,17 @@ func (parser *Parser) parseTerm() (float64, error) {
  *     | expression TokenSubOP term
  */
 func (parser *Parser) parseExpression() (float64, error) {
-	v1, err1 := parser.parseTerm()
-	if err1 != nil {
-		return 0, err1
+	var v1 float64
+	var err error
+
+	if v1, err = parser.parseTerm(); err != nil {
+		return 0, err
 	}
 
 	for {
-		token, err := parser.nextToken()
-		if err != nil {
+		var token *Token
+
+		if token, err = parser.nextToken(); err != nil {
 			return 0, err
 		}
 
@@ -161,9 +167,9 @@ func (parser *Parser) parseExpression() (float64, error) {
 
 		op := token.kind
 
-		v2, err2 := parser.parseTerm()
-		if err2 != nil {
-			return 0, err2
+		var v2 float64
+		if v2, err = parser.parseTerm(); err != nil {
+			return 0, err
 		}
 
 		switch op {
